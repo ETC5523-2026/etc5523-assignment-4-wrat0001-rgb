@@ -12,12 +12,15 @@ Description: Provides an interactive Shiny application for exploring
 License: MIT + file LICENSE
 Config/roxygen2/version: 8.1.1
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-Imports: 
+Imports:
+    shiny,
     bslib,
     dplyr,
-    ggplot2,
-    shiny
-Suggests: 
-    lubridate,
-    readr
+    ggplot2
+Suggests:
+    readr,
+    lubridate
+Roxygen: list(markdown = TRUE)
+Depends: 
+    R (>= 3.5)
+LazyData: true

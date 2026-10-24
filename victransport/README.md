@@ -27,7 +27,11 @@ The dataset contains monthly observations of average daily public transport patr
 
 The main measure is `Pax_daily`, representing reported average daily passenger patronage for each recorded category.
 
-**Data source:** Victorian Government, Monthly Average Patronage by Day Type and Mode.
+**Data source:** Victorian Government,
+[Monthly Average Patronage by Day Type and By Mode](https://opendata.transport.vic.gov.au/dataset/monthly-average-patronage-by-day-type-and-by-mode).
+
+The original data were obtained from the
+[official data resource](https://opendata.transport.vic.gov.au/dataset/monthly-average-patronage-by-day-type-and-by-mode/resource/c2f1279b-c414-4371-a12e-e1cc5836ee1a).
 
 **Important:** The data represent average daily patronage within reporting categories, rather than total monthly boardings or individual passenger journeys.
 
