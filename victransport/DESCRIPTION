@@ -17,7 +17,8 @@ Imports:
     bslib,
     dplyr,
     ggplot2,
-    rlang
+    rlang,
+    scales
 Suggests:
     readr,
     lubridate
