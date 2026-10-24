@@ -16,7 +16,8 @@ Imports:
     shiny,
     bslib,
     dplyr,
-    ggplot2
+    ggplot2,
+    rlang
 Suggests:
     readr,
     lubridate
