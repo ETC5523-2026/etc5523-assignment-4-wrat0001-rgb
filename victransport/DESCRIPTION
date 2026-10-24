@@ -1,0 +1,23 @@
+Package: victransport
+Title: Explore Victorian Public Transport Patronage
+Version: 0.0.0.9000
+Authors@R: 
+    person("Waranya", "Ratirotjanakul", 
+    email = "wrat0001@student.monash.edu", 
+    role = c("aut", "cre"))
+Description: Provides an interactive Shiny application for exploring
+    average daily public transport patronage in Victoria, Australia.
+    Users can examine how patronage varies across transport modes,
+    days of the week, day types, and reporting periods.
+License: MIT + file LICENSE
+Config/roxygen2/version: 8.1.1
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Imports: 
+    bslib,
+    dplyr,
+    ggplot2,
+    shiny
+Suggests: 
+    lubridate,
+    readr
