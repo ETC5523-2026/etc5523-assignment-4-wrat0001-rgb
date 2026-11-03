@@ -38,6 +38,9 @@ day type and reporting month.
 Each observation represents a reporting combination of month,
 day of the week, day type and transport mode.
 
+The dataset covers January 2018 to March 2026.
+The final reporting year is therefore incomplete.
+
 The dataset contains reported average daily patronage values,
 not monthly patronage totals. Values should not be summed
 across reporting categories to estimate monthly totals.

@@ -5,7 +5,7 @@
 \title{Summarise Victorian Public Transport Patronage}
 \usage{
 summarise_daily_patronage(
-  data = patronage,
+  data = NULL,
   modes = NULL,
   day_types = NULL,
   years = NULL
@@ -16,13 +16,14 @@ summarise_daily_patronage(
 Defaults to the bundled \code{patronage} dataset.}
 
 \item{modes}{Character vector of transport modes to include.
-Defaults to all available modes.}
+\code{NULL} (default) includes all available modes.}
 
 \item{day_types}{Character vector of day types to include.
-Defaults to all available day types.}
+\code{NULL} (default) includes all available day types.}
 
 \item{years}{Numeric vector of length two specifying the
-inclusive reporting-year range. Defaults to all years.}
+inclusive reporting-year range. \code{NULL} (default)
+includes all available years.}
 }
 \value{
 A tibble containing \code{mode}, \code{day_type},

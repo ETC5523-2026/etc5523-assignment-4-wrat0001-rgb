@@ -6,11 +6,12 @@
 #' @param data A data frame containing patronage observations.
 #'   Defaults to the bundled `patronage` dataset.
 #' @param modes Character vector of transport modes to include.
-#'   Defaults to all available modes.
+#'   `NULL` (default) includes all available modes.
 #' @param day_types Character vector of day types to include.
-#'   Defaults to all available day types.
+#'   `NULL` (default) includes all available day types.
 #' @param years Numeric vector of length two specifying the
-#'   inclusive reporting-year range. Defaults to all years.
+#'   inclusive reporting-year range. `NULL` (default)
+#'   includes all available years.
 #'
 #' @return A tibble containing `mode`, `day_type`,
 #'   `day_of_week`, `mean_daily_patronage` and `n_observations`.
@@ -42,13 +43,22 @@
 #'
 #' @importFrom rlang .data
 #' 
+#
 #' @export
 summarise_daily_patronage <- function(
-    data = patronage,
+    data = NULL,
     modes = NULL,
     day_types = NULL,
     years = NULL
 ) {
+
+  # Load the bundled dataset if no data is provided
+  if (is.null(data)) {
+    data <- get(
+      "patronage",
+      envir = asNamespace("victransport")
+    )
+  }
 
   # Filter by transport mode, if specified
   if (!is.null(modes)) {
@@ -75,7 +85,7 @@ summarise_daily_patronage <- function(
     )
   }
 
-  # Summarise average daily patronage by group
+  # Summarise average daily patronage
   data |>
     dplyr::group_by(
       .data$mode,
@@ -91,3 +101,4 @@ summarise_daily_patronage <- function(
       .groups = "drop"
     )
 }
+

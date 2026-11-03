@@ -5,7 +5,7 @@
 #' day type and reporting month.
 #'
 #' @format A data frame with 4,450 rows and 7 variables:
-#' 
+#'
 #' | **Variable** | **Type** | **Description** |
 #' |:----------|:------|:-------------|
 #' | `year` | Integer | Reporting year, from 2018 to 2026. |
@@ -19,17 +19,20 @@
 #' @details
 #' Each observation represents a reporting combination of month,
 #' day of the week, day type and transport mode.
-#' 
+#'
+#' The dataset covers January 2018 to March 2026.
+#' The final reporting year is therefore incomplete.
+#'
 #' The dataset contains reported average daily patronage values,
 #' not monthly patronage totals. Values should not be summed
 #' across reporting categories to estimate monthly totals.
 #'
 #' @source Victorian Government open transport data, *Monthly Average Patronage by
 #'   Day Type and By Mode*.
-#' 
+#'
 #' Dataset:
 #' \url{https://opendata.transport.vic.gov.au/dataset/monthly-average-patronage-by-day-type-and-by-mode}
-#' 
+#'
 #' Data resource:
 #' \url{https://opendata.transport.vic.gov.au/dataset/monthly-average-patronage-by-day-type-and-by-mode/resource/c2f1279b-c414-4371-a12e-e1cc5836ee1a}
 #'
@@ -45,5 +48,5 @@
 #'
 #' # Check the reporting period
 #' range(patronage$date)
-#' 
+#'
 "patronage"

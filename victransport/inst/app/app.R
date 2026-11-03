@@ -813,27 +813,32 @@ output$trend_finding <- renderUI({
 })
 
   # Day-of-week data
-  weekday_plot_data <- reactive({
+weekday_plot_data <- reactive({
 
-    # Combine any mode-level rows into ONE bar per day and day type.
-    # Use the filtered observations directly so modes are not plotted separately.
-    filtered_data() |>
-      group_by(day_of_week, day_type) |>
-      summarise(
-        mean_daily_patronage = mean(avg_daily_patronage, na.rm = TRUE),
-        .groups = "drop"
-      ) |>
-      mutate(
-        day_of_week = factor(
-          day_of_week,
-          levels = weekday_levels
-        ),
-        day_type = factor(
-          day_type,
-          levels = day_levels
-        )
+  # Use the exported package summary function.
+  # Weight mode-level means by their observation counts so
+  # the result matches the mean of the original filtered rows.
+  weekday_summary() |>
+    group_by(day_of_week, day_type) |>
+    summarise(
+      mean_daily_patronage = weighted.mean(
+        mean_daily_patronage,
+        w = n_observations,
+        na.rm = TRUE
+      ),
+      .groups = "drop"
+    ) |>
+    mutate(
+      day_of_week = factor(
+        day_of_week,
+        levels = weekday_levels
+      ),
+      day_type = factor(
+        day_type,
+        levels = day_levels
       )
-  })
+    )
+})
 
   # Interactive weekday chart
   output$weekday_plot <- renderPlotly({

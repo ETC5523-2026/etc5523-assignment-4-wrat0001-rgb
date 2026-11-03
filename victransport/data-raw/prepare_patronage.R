@@ -80,6 +80,16 @@ patronage |>
   dplyr::count(date, day_of_week, day_type, mode) |>
   dplyr::filter(n > 1)
 
+# Validate prepared data
+stopifnot(
+  !anyNA(patronage$date),
+  !anyNA(patronage$mode),
+  !anyNA(patronage$avg_daily_patronage),
+  all(patronage$avg_daily_patronage >= 0),
+  !anyDuplicated(
+    patronage[c("date", "day_of_week", "day_type", "mode")]
+  )
+)
 
 # Save cleaned dataset into the R package
 usethis::use_data(

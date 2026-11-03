@@ -1,29 +1,38 @@
+
 Package: victransport
 Title: Explore Victorian Public Transport Patronage
 Version: 0.0.0.9000
-Authors@R: 
-    person("Waranya", "Ratirotjanakul", 
-    email = "wrat0001@student.monash.edu", 
-    role = c("aut", "cre"))
+Authors@R:
+    person("Waranya", "Ratirotjanakul",
+           email = "wrat0001@student.monash.edu",
+           role = c("aut", "cre"))
 Description: Provides an interactive Shiny application for exploring
     average daily public transport patronage in Victoria, Australia.
-    Users can examine how patronage varies across transport modes,
-    days of the week, day types, and reporting periods.
+    Users can investigate patronage patterns across transport modes,
+    days of the week, day types, and reporting periods through
+    interactive visualisations, summary statistics, and dynamically
+    generated key findings. The package also includes a prepared
+    patronage dataset and functions for summarising patronage data.
 License: MIT + file LICENSE
-Config/roxygen2/version: 8.1.1
+URL: https://github.com/ETC5523-2026/etc5523-assignment-4-wrat0001-rgb
+BugReports: https://github.com/ETC5523-2026/etc5523-assignment-4-wrat0001-rgb/issues
 Encoding: UTF-8
-Imports:
-    shiny,
-    bslib,
-    dplyr,
-    ggplot2,
-    rlang,
-    scales,
-    plotly
-Suggests:
-    readr,
-    lubridate
-Roxygen: list(markdown = TRUE)
-Depends: 
+Depends:
     R (>= 3.5)
+Imports:
+    dplyr,
+    rlang,
+    shiny
+Suggests:
+    bslib,
+    ggplot2,
+    knitr,
+    lubridate,
+    plotly,
+    readr,
+    rmarkdown,
+    scales
+VignetteBuilder: knitr
+Config/roxygen2/version: 8.1.1
+Roxygen: list(markdown = TRUE)
 LazyData: true
