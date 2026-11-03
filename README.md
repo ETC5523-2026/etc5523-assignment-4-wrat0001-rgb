@@ -1,7 +1,8 @@
-# victransport
+# victransport <img src="man/figures/victransport_logo.png" align="right" width="150" alt="victransport logo">
 
 <!-- badges: start -->
 <!-- badges: end -->
+
 
 ## Overview
 
@@ -48,7 +49,6 @@ remotes::install_github(
 )
 ```
 
-The `subdir` argument is required because the R package is located inside the `victransport` folder of the assignment repository.
 
 ## Launching the Shiny app
 
@@ -98,9 +98,9 @@ Comparisons between years should be interpreted carefully because the available 
 
 ## Documentation
 
-A package documentation website will be published using `pkgdown`. It will include reference pages for exported functions and the `patronage` dataset, along with a vignette demonstrating how to use and interpret the package.
+The pkgdown website provides reference documentation for the exported functions and bundled dataset, along with a tutorial demonstrating how to explore Victorian public transport patronage.
 
-**Documentation website:** To be added after publication.
+See the [Exploring Victorian Public Transport Patronage](articles/exploring-patronage.html) tutorial for worked examples.
 
 ## AI-use declaration
 
