@@ -88,6 +88,8 @@ ChatGPT (OpenAI) was used to assist with planning the package structure, interpr
 
 All AI-assisted material will be reviewed, tested and revised by the author before submission. The final declaration will be updated to reflect the specific assistance received throughout development.
 
+AI conversations can be found here: [https://chatgpt.com/share/6ae93dfa-c9b4-83ec-8c0b-6deb345fc1ce](https://chatgpt.com/share/6ae93dfa-c9b4-83ec-8c0b-6deb345fc1ce)
+
 ## Example
 
 After installing the package, load `victransport` and launch the

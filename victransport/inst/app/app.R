@@ -11,22 +11,36 @@ data("patronage", package = "victransport")
 ui <- page_sidebar(
   title = "Victorian Public Transport Explorer",
 
+  theme = bs_theme(
+    version = 5,
+    bootswatch = "minty"
+  ),
+
   sidebar = sidebar(
     title = "Explore patronage",
+    
+  
+checkboxGroupInput(
+  inputId = "mode",
+  label = "Transport mode",
+  choices = sort(unique(patronage$mode)),
+  selected = sort(unique(patronage$mode))
+),
 
-    selectInput(
-      "mode",
-      "Transport mode",
-      choices = sort(unique(patronage$mode)),
-      selected = "Metropolitan train"
-    ),
-
-    selectInput(
-      "day_type",
-      "Day type",
-      choices = c("All", sort(unique(patronage$day_type))),
-      selected = "All"
-    ),
+checkboxGroupInput(
+  inputId = "day_type",
+  label = "Day type",
+  choices = c(
+    "Normal Weekday",
+    "School Holiday Weekday",
+    "Weekend"
+  ),
+  selected = c(
+    "Normal Weekday",
+    "School Holiday Weekday",
+    "Weekend"
+  )
+),
 
     sliderInput(
       "years",
@@ -38,6 +52,16 @@ ui <- page_sidebar(
       sep = ""
     ),
 
+  checkboxGroupInput(
+    inputId = "months",
+    label = "Reporting months",
+    choices = setNames(
+      1:12,
+      month.abb
+    ),
+    selected = 1:12
+  ),
+
     helpText(
       "Patronage represents reported average daily passenger use,",
       "not total monthly passenger journeys."
@@ -45,15 +69,26 @@ ui <- page_sidebar(
   ),
 
   layout_columns(
-    value_box(
-      title = "Mean of reported daily averages",
-      value = textOutput("mean_patronage")
-    ),
+  value_box(
+    title = "Overall mean of reported daily averages",
+    value = textOutput("mean_patronage"),
 
-    value_box(
-      title = "Reporting months",
-      value = textOutput("months_shown")
-    )
+    hr(),
+
+    h6("By transport mode"),
+    uiOutput("mode_breakdown")
+  ),
+
+
+  value_box(
+    title = "Reporting months",
+    value = textOutput("months_shown"),
+
+    hr(),
+
+    h6("Reporting period"),
+    uiOutput("reporting_period")
+  )
   ),
 
   
@@ -70,11 +105,10 @@ navset_card_tab(
 
   nav_panel(
     "Compare transport modes",
-    p(
-      "Compare all five transport modes using the selected",
-      "reporting years and day type. The transport mode filter",
-      "does not apply to this comparison."
-    ),
+      p(
+    "Mean reported daily patronage by selected transport mode,",
+    "based on the chosen day types and reporting period."
+  ),
     plotOutput("mode_plot", height = "450px")
   )
 )
@@ -85,36 +119,48 @@ navset_card_tab(
 server <- function(input, output, session) {
 
   # Shared filtered data for the selected transport mode
-  filtered_data <- reactive({
-    data <- patronage |>
-      filter(
-        mode == input$mode,
-        year >= input$years[1],
-        year <= input$years[2]
+
+filtered_data <- reactive({
+
+  validate(
+    need(
+      length(input$mode) > 0,
+      "Please select at least one transport mode."
+    ),
+    need(
+      length(input$day_type) > 0,
+      "Please select at least one day type."
+    ),
+    need(
+      length(input$months) > 0,
+      "Please select at least one reporting month."
+    )
+  )
+
+  patronage |>
+    dplyr::filter(
+      mode %in% input$mode,
+      day_type %in% input$day_type,
+      year >= input$years[1],
+      year <= input$years[2],
+      month %in% as.integer(input$months)
+    )
+})
+
+
+# Use the same filtered data for transport mode comparison
+mode_comparison_data <- reactive({
+  filtered_data()
+})
+
+# Summary of selected transport modes
+  mode_summary <- reactive({
+    filtered_data() |>
+      group_by(mode) |>
+      summarise(
+        mean_patronage = mean(avg_daily_patronage),
+        .groups = "drop"
       )
-
-    if (input$day_type != "All") {
-      data <- data |>
-        filter(day_type == input$day_type)
-    }
-
-    data
-  })
-  
-  # Filter by reporting years and day type, keeping all modes
-  mode_comparison_data <- reactive({
-    data <- patronage |>
-      filter(
-        year >= input$years[1],
-        year <= input$years[2]
-      )
-
-    if (input$day_type != "All") {
-      data <- data |>
-        filter(day_type == input$day_type)
-    }
-
-    data
   })
 
   # Summary function from the victransport package
@@ -137,6 +183,41 @@ server <- function(input, output, session) {
     )
   })
 
+
+# Display mean daily patronage by selected transport mode
+output$mode_breakdown <- renderUI({
+
+  data <- mode_summary()
+
+  validate(
+    need(nrow(data) > 0, "No transport modes selected.")
+  )
+
+  tagList(
+    lapply(seq_len(nrow(data)), function(i) {
+      div(
+        style = paste(
+          "display: flex;",
+          "justify-content: space-between;",
+          "gap: 12px;",
+          "padding: 6px 0;",
+          "border-bottom: 1px solid #e9ecef;"
+        ),
+
+        span(data$mode[i]),
+
+        strong(
+          format(
+            round(data$mean_patronage[i]),
+            big.mark = ","
+          )
+        )
+      )
+    })
+  )
+})
+
+
   output$months_shown <- renderText({
     data <- filtered_data()
 
@@ -146,6 +227,45 @@ server <- function(input, output, session) {
 
     dplyr::n_distinct(data$date)
   })
+  
+
+
+output$reporting_period <- renderUI({
+
+  data <- filtered_data()
+
+  validate(
+    need(nrow(data) > 0, "No observations match your filters.")
+  )
+
+  # Selected year range
+  selected_years <- paste(
+    input$years[1],
+    input$years[2],
+    sep = "–"
+  )
+
+  # Selected calendar months, in chronological order
+  selected_months <- paste(
+    month.abb[sort(as.integer(input$months))],
+    collapse = ", "
+  )
+
+  tagList(
+    div(
+      style = "display: flex; justify-content: space-between; gap: 12px; padding: 6px 0;",
+      span("Years"),
+      strong(selected_years)
+    ),
+
+    div(
+      style = "display: flex; justify-content: space-between; gap: 12px; padding: 6px 0;",
+      span("Months"),
+      strong(selected_months)
+    )
+  )
+})
+
 
   output$trend_plot <- renderPlot({
     data <- filtered_data()

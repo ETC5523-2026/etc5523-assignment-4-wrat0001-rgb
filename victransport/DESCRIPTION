@@ -18,7 +18,8 @@ Imports:
     dplyr,
     ggplot2,
     rlang,
-    scales
+    scales,
+    plotly
 Suggests:
     readr,
     lubridate
