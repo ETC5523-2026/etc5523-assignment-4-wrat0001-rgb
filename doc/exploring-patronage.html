@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Exploring Victorian Public Transport Patronage</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Exploring Victorian Public Transport
+Patronage</h1>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(victransport)</span></code></pre></div>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The <code>victransport</code> package provides tools for exploring
+reported average daily public transport patronage in Victoria,
+Australia.</p>
+<p>This vignette demonstrates how to:</p>
+<ol style="list-style-type: decimal">
+<li>Install the package and access the bundled dataset.</li>
+<li>Explore and summarise public transport patronage.</li>
+<li>Launch and use the interactive Shiny application.</li>
+<li>Interpret the app outputs and understand their limitations.</li>
+</ol>
+</div>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>Install the development version of <code>victransport</code> from
+GitHub:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="st">&quot;ETC5523-2026/etc5523-assignment-4-wrat0001-rgb&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>)</span></code></pre></div>
+<p>After installation, load the package:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(victransport)</span></code></pre></div>
+</div>
+<div id="explore-the-dataset" class="section level2">
+<h2>1. Explore the dataset</h2>
+<p>The package includes the <code>patronage</code> dataset, containing
+reported average daily patronage by transport mode, day of the week, day
+type and reporting month.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;patronage&quot;</span>, <span class="at">package =</span> <span class="st">&quot;victransport&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">head</span>(patronage)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt;   year month       date day_of_week               day_type             mode</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; 1 2018     1 2018-01-01      Monday         Normal Weekday Metropolitan bus</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; 2 2018     1 2018-01-01     Tuesday         Normal Weekday Metropolitan bus</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; 3 2018     1 2018-01-01   Wednesday         Normal Weekday Metropolitan bus</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; 4 2018     1 2018-01-01      Monday School Holiday Weekday Metropolitan bus</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; 5 2018     1 2018-01-01     Tuesday School Holiday Weekday Metropolitan bus</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; 6 2018     1 2018-01-01   Wednesday School Holiday Weekday Metropolitan bus</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt;   avg_daily_patronage</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; 1              308450</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; 2              359800</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt; 3              400250</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 4              298500</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; 5              295500</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; 6              299950</span></span></code></pre></div>
+<p>The dataset covers January 2018 to March 2026.</p>
+<p>We can check the reporting period and available transport modes:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">range</span>(patronage<span class="sc">$</span>date)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;2018-01-01&quot; &quot;2026-03-01&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="fu">unique</span>(patronage<span class="sc">$</span>mode)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Metropolitan bus&quot;   &quot;Metropolitan train&quot; &quot;Regional bus&quot;      </span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; [4] &quot;Regional train&quot;     &quot;Tram&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="fu">unique</span>(patronage<span class="sc">$</span>day_type)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Normal Weekday&quot;         &quot;School Holiday Weekday&quot; &quot;Weekend&quot;</span></span></code></pre></div>
+<p>Each observation represents a specific combination of reporting
+month, transport mode, day of the week and day type.</p>
+</div>
+<div id="summarise-patronage" class="section level2">
+<h2>2. Summarise patronage</h2>
+<p>The package provides the exported function
+<code>summarise_daily_patronage()</code>.</p>
+<p>This function calculates the unweighted mean of reported average
+daily patronage values, grouped by transport mode, day type and day of
+the week.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>patronage_summary <span class="ot">&lt;-</span> <span class="fu">summarise_daily_patronage</span>()</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">head</span>(patronage_summary)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt;   mode             day_type      day_of_week mean_daily_patronage n_observations</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;            &lt;chr&gt;         &lt;ord&gt;                      &lt;dbl&gt;          &lt;int&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; 1 Metropolitan bus Normal Weekd… Monday                   329452.             93</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; 2 Metropolitan bus Normal Weekd… Tuesday                  350910.             93</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; 3 Metropolitan bus Normal Weekd… Wednesday                354643.             96</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; 4 Metropolitan bus Normal Weekd… Thursday                 355585.             95</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; 5 Metropolitan bus Normal Weekd… Friday                   334818.             94</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; 6 Metropolitan bus School Holid… Monday                   261829.             45</span></span></code></pre></div>
+<p>The resulting table includes:</p>
+<ul>
+<li><code>mode</code>: Public transport mode.</li>
+<li><code>day_type</code>: Day classification.</li>
+<li><code>day_of_week</code>: Day of the week.</li>
+<li><code>mean_daily_patronage</code>: Mean of reported daily
+averages.</li>
+<li><code>n_observations</code>: Number of reporting observations.</li>
+</ul>
+</div>
+<div id="compare-selected-transport-modes" class="section level2">
+<h2>3. Compare selected transport modes</h2>
+<p>We can filter the summary to focus on metropolitan trains and
+trams.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>mode_summary <span class="ot">&lt;-</span> <span class="fu">summarise_daily_patronage</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="at">modes =</span> <span class="fu">c</span>(<span class="st">&quot;Metropolitan train&quot;</span>, <span class="st">&quot;Tram&quot;</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>)</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="fu">head</span>(mode_summary)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt;   mode               day_type    day_of_week mean_daily_patronage n_observations</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;              &lt;chr&gt;       &lt;ord&gt;                      &lt;dbl&gt;          &lt;int&gt;</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; 1 Metropolitan train Normal Wee… Monday                   495766.             93</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; 2 Metropolitan train Normal Wee… Tuesday                  556234.             93</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt; 3 Metropolitan train Normal Wee… Wednesday                563695.             96</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt; 4 Metropolitan train Normal Wee… Thursday                 569149.             95</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; 5 Metropolitan train Normal Wee… Friday                   538652.             94</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; 6 Metropolitan train School Hol… Monday                   422099.             45</span></span></code></pre></div>
+<p>This allows us to examine reported patronage patterns for selected
+transport modes without modifying the original dataset.</p>
+</div>
+<div id="explore-different-day-types" class="section level2">
+<h2>4. Explore different day types</h2>
+<p>The function also supports filtering by day type.</p>
+<p>For example, we can examine patronage during normal weekdays:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>weekday_summary <span class="ot">&lt;-</span> <span class="fu">summarise_daily_patronage</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">day_types =</span> <span class="st">&quot;Normal Weekday&quot;</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="fu">head</span>(weekday_summary)</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt;   mode               day_type    day_of_week mean_daily_patronage n_observations</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;              &lt;chr&gt;       &lt;ord&gt;                      &lt;dbl&gt;          &lt;int&gt;</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; 1 Metropolitan bus   Normal Wee… Monday                   329452.             93</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; 2 Metropolitan bus   Normal Wee… Tuesday                  350910.             93</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co">#&gt; 3 Metropolitan bus   Normal Wee… Wednesday                354643.             96</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt; 4 Metropolitan bus   Normal Wee… Thursday                 355585.             95</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; 5 Metropolitan bus   Normal Wee… Friday                   334818.             94</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; 6 Metropolitan train Normal Wee… Monday                   495766.             93</span></span></code></pre></div>
+<p>This helps distinguish normal weekday travel patterns from school
+holiday weekdays and weekends.</p>
+</div>
+<div id="compare-reporting-periods" class="section level2">
+<h2>5. Compare reporting periods</h2>
+<p>We can also restrict the analysis to a selected range of years.</p>
+<p>For example, the following code summarises reported patronage between
+2022 and 2025:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>recent_summary <span class="ot">&lt;-</span> <span class="fu">summarise_daily_patronage</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="at">years =</span> <span class="fu">c</span>(<span class="dv">2022</span>, <span class="dv">2025</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="fu">head</span>(recent_summary)</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt;   mode             day_type      day_of_week mean_daily_patronage n_observations</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;            &lt;chr&gt;         &lt;ord&gt;                      &lt;dbl&gt;          &lt;int&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt; 1 Metropolitan bus Normal Weekd… Monday                   346701.             46</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt; 2 Metropolitan bus Normal Weekd… Tuesday                  374896.             46</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt; 3 Metropolitan bus Normal Weekd… Wednesday                376818.             46</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt; 4 Metropolitan bus Normal Weekd… Thursday                 379020              45</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt; 5 Metropolitan bus Normal Weekd… Friday                   355324.             45</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt; 6 Metropolitan bus School Holid… Monday                   293798.             20</span></span></code></pre></div>
+<p>The function can combine filters to investigate specific transport
+modes, day types and reporting periods.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>selected_summary <span class="ot">&lt;-</span> <span class="fu">summarise_daily_patronage</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="at">modes =</span> <span class="st">&quot;Metropolitan train&quot;</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="at">day_types =</span> <span class="st">&quot;Normal Weekday&quot;</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  <span class="at">years =</span> <span class="fu">c</span>(<span class="dv">2022</span>, <span class="dv">2025</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>)</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="fu">head</span>(selected_summary)</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 5</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt;   mode               day_type    day_of_week mean_daily_patronage n_observations</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;              &lt;chr&gt;       &lt;ord&gt;                      &lt;dbl&gt;          &lt;int&gt;</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; 1 Metropolitan train Normal Wee… Monday                   474415.             46</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt; 2 Metropolitan train Normal Wee… Tuesday                  559966.             46</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt; 3 Metropolitan train Normal Wee… Wednesday                564504.             46</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="co">#&gt; 4 Metropolitan train Normal Wee… Thursday                 576732.             45</span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; 5 Metropolitan train Normal Wee… Friday                   526151.             45</span></span></code></pre></div>
+</div>
+<div id="interpreting-the-results" class="section level2">
+<h2>6. Interpreting the results</h2>
+<p>The values in the dataset represent <strong>reported average daily
+patronage</strong>, not total monthly passenger journeys.</p>
+<p>The <code>summarise_daily_patronage()</code> function calculates
+unweighted means of these reported daily averages across the selected
+reporting months.</p>
+<p>Consequently, the summaries should not be interpreted as combined
+network-wide daily passenger totals.</p>
+<p>Comparisons across years also require care because reporting coverage
+may differ. In particular, 2026 contains observations only through
+March.</p>
+</div>
+<div id="launch-and-use-the-shiny-application" class="section level2">
+<h2>7. Launch and use the Shiny application</h2>
+<p>Launch the Victorian Public Transport Explorer:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">library</span>(victransport)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">run_transport_app</span>()</span></code></pre></div>
+<p>The application provides four interactive filters:</p>
+<ul>
+<li><strong>Transport mode:</strong> Select one or more metropolitan or
+regional transport modes.</li>
+<li><strong>Day type:</strong> Compare normal weekdays, school holiday
+weekdays and weekends.</li>
+<li><strong>Reporting years:</strong> Choose the reporting-year
+range.</li>
+<li><strong>Reporting months:</strong> Select a calendar-month range
+applied to each selected year. For example, selecting January–June
+includes those months in every selected year where data are
+available.</li>
+</ul>
+<p>The application automatically updates its summary cards, interactive
+charts and key findings when filters change.</p>
+<div id="understanding-the-app-outputs" class="section level3">
+<h3>Understanding the app outputs</h3>
+<p>The application provides:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Mean reported daily patronage:</strong> The unweighted mean
+of reported daily averages for the selected observations.</li>
+<li><strong>Reporting months:</strong> The number of distinct reporting
+months represented in the filtered data.</li>
+<li><strong>Monthly trends:</strong> Shows how reported patronage
+changes over time for different day types.</li>
+<li><strong>Day-of-week comparison:</strong> Highlights differences
+across weekdays and day types.</li>
+<li><strong>Transport mode comparison:</strong> Compares mean reported
+daily patronage across selected modes.</li>
+</ol>
+<p>Each chart also includes dynamically generated key findings to help
+users identify relevant patterns.</p>
+</div>
+</div>
+<div id="example-exploring-metropolitan-train-patronage" class="section level2">
+<h2>8. Example: Exploring metropolitan train patronage</h2>
+<p>Suppose we want to investigate metropolitan train patronage during
+normal weekdays between 2022 and 2025.</p>
+<p>In the Shiny app:</p>
+<ol style="list-style-type: decimal">
+<li>Select <strong>Metropolitan train</strong> under Transport
+mode.</li>
+<li>Select <strong>Normal Weekday</strong> under Day type.</li>
+<li>Set Reporting years to <strong>2022–2025</strong>.</li>
+<li>Keep all reporting months selected.</li>
+</ol>
+<p>The summary card displays the mean of reported average daily
+patronage values for the selected observations.</p>
+<p>The monthly trend chart helps identify how patronage changes over the
+selected reporting period.</p>
+<p>The day-of-week chart allows users to compare reported patronage
+across Monday to Friday and identify which weekdays have higher or lower
+average values.</p>
+<p>Because only one transport mode is selected, the transport mode
+comparison focuses on metropolitan trains.</p>
+<p>These results describe reported daily averages rather than total
+passenger journeys. They should not be interpreted as total monthly
+patronage.</p>
+</div>
+<div id="data-source" class="section level2">
+<h2>Data source</h2>
+<p>Victorian Government, <a href="https://opendata.transport.vic.gov.au/dataset/monthly-average-patronage-by-day-type-and-by-mode">Monthly
+Average Patronage by Day Type and By Mode</a>.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
