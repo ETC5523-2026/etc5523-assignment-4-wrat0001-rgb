@@ -44,8 +44,7 @@ install.packages("remotes")
 
 # Install victransport from GitHub
 remotes::install_github(
-  "ETC5523-2026/etc5523-assignment-4-wrat0001-rgb",
-  subdir = "victransport"
+  "ETC5523-2026/etc5523-assignment-4-wrat0001-rgb"
 )
 ```
 
