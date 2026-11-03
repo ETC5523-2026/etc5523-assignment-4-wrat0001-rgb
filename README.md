@@ -1,4 +1,4 @@
-# victransport <img src="man/figures/victransport_logo.png" align="right" width="150" alt="victransport logo">
+# victransport <img src="man/figures/logo.png" align="right" width="150" alt="victransport logo">
 
 <!-- badges: start -->
 <!-- badges: end -->
