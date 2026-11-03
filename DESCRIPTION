@@ -14,7 +14,8 @@ Description: Provides an interactive Shiny application for exploring
     generated key findings. The package also includes a prepared
     patronage dataset and functions for summarising patronage data.
 License: MIT + file LICENSE
-URL: https://github.com/ETC5523-2026/etc5523-assignment-4-wrat0001-rgb
+URL: https://etc5523-2026.github.io/etc5523-assignment-4-wrat0001-rgb/,
+    https://github.com/ETC5523-2026/etc5523-assignment-4-wrat0001-rgb
 BugReports: https://github.com/ETC5523-2026/etc5523-assignment-4-wrat0001-rgb/issues
 Encoding: UTF-8
 Depends:

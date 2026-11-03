@@ -136,13 +136,17 @@ January–March observations.
 
 ## Documentation
 
-The pkgdown website provides reference documentation for the exported
-functions and bundled dataset, along with a tutorial demonstrating how
-to explore Victorian public transport patronage.
+The [victransport documentation
+website](https://etc5523-2026.github.io/etc5523-assignment-4-wrat0001-rgb/)
+provides information about the package, including:
 
-See the [Exploring Victorian Public Transport
-Patronage](articles/exploring-patronage.md) tutorial for worked
-examples.
+- Function and dataset reference documentation.
+- A tutorial demonstrating how to install the package, launch and use
+  the Shiny app, and interpret its outputs.
+
+Explore the [Victorian Public Transport Patronage
+tutorial](https://etc5523-2026.github.io/etc5523-assignment-4-wrat0001-rgb/articles/exploring-patronage.html)
+for step-by-step examples.
 
 ## AI-use declaration
 
